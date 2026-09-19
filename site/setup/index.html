@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Set up your receptionist | Receptly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#0A0A0A;
+    --panel:#141414;
+    --field:#000000;
+    --line:#2A2A2A;
+    --line-2:#3A3A3A;
+    --ink:#F2F0EB;
+    --ink-2:#B9B6AF;
+    --muted:#7E7B75;
+    --hi:#FFD400;
+    --hi-2:#F2C300;
+    --bad:#FF6B5E;
+    --display:"Barlow Condensed",Impact,"Arial Narrow",sans-serif;
+    --body:"Barlow",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink)}
+  body{font-family:var(--body);font-size:17px;line-height:1.5;padding:0 16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:28px 0 80px}
+
+  header{display:flex;align-items:center;gap:12px;padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:34px}
+  .mark{width:44px;height:44px;background:var(--hi);color:#0A0A0A;font-family:var(--display);font-weight:700;font-size:30px;display:flex;align-items:center;justify-content:center;flex:none}
+  .word{font-family:var(--display);font-weight:700;font-size:30px;letter-spacing:.06em;text-transform:uppercase}
+
+  .kicker{font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--hi);margin:0 0 10px;display:flex;align-items:center;gap:10px}
+  .kicker::before{content:"";width:28px;height:3px;background:var(--hi)}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,9vw,60px);line-height:.95;text-transform:uppercase;letter-spacing:.005em;margin:0 0 16px;text-wrap:balance}
+  .lead{color:var(--ink-2);margin:0 0 6px;max-width:58ch}
+  .lead b{color:var(--ink);font-weight:600}
+
+  .progress{display:flex;gap:4px;margin:26px 0 0}
+  .progress span{flex:1;height:4px;background:var(--line)}
+  .progress span.on{background:var(--hi)}
+
+  fieldset{border:0;margin:0;padding:0}
+  section{margin-top:40px;padding-top:26px;border-top:1px solid var(--line)}
+  section:first-of-type{margin-top:34px}
+  h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,6vw,34px);text-transform:uppercase;letter-spacing:.01em;margin:0 0 4px;line-height:1}
+  .why{color:var(--muted);font-size:15.5px;margin:0 0 18px;max-width:58ch}
+
+  .f{margin-top:20px}
+  label.l{display:block;font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+  label.l small{font-family:var(--body);font-weight:400;font-size:14px;letter-spacing:0;text-transform:none;color:var(--muted);margin-left:6px}
+  .hint{color:var(--muted);font-size:14.5px;margin:-3px 0 9px}
+
+  input[type=text],input[type=tel],input[type=email],input[type=number],select,textarea{
+    width:100%;min-height:56px;background:var(--field);color:var(--ink);border:1px solid var(--line-2);
+    font:inherit;font-size:17px;padding:14px 16px;outline:none;-webkit-appearance:none;appearance:none;
+  }
+  textarea{min-height:120px;resize:vertical;line-height:1.45}
+  select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'><path d='M1 1l7 7 7-7' fill='none' stroke='%23FFD400' stroke-width='2.4'/></svg>");
+    background-repeat:no-repeat;background-position:right 16px center;padding-right:44px}
+  input:focus,select:focus,textarea:focus{border-color:var(--hi);box-shadow:0 0 0 2px var(--hi)}
+  input[readonly]{color:var(--ink-2);border-style:dashed}
+  ::placeholder{color:#5E5B55}
+  .err{display:none;color:var(--bad);font-size:14.5px;margin-top:7px}
+  .f.bad input,.f.bad select,.f.bad textarea{border-color:var(--bad)}
+  .f.bad .err{display:block}
+
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:520px){.row{grid-template-columns:1fr}}
+
+  .opts{display:grid;gap:10px}
+  .opt{display:flex;gap:14px;align-items:flex-start;min-height:56px;padding:14px 16px;background:var(--panel);border:1px solid var(--line-2);cursor:pointer}
+  .opt input{width:24px;height:24px;margin:1px 0 0;flex:none;accent-color:var(--hi);cursor:pointer}
+  .opt span{display:block}
+  .opt b{display:block;font-weight:600;color:var(--ink)}
+  .opt small{display:block;color:var(--muted);font-size:14.5px;margin-top:2px}
+  .opt:has(input:checked){border-color:var(--hi)}
+
+  .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .day{position:relative}
+  .day input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .day span{display:flex;align-items:center;justify-content:center;min-height:52px;background:var(--panel);border:1px solid var(--line-2);font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.06em;text-transform:uppercase;user-select:none}
+  .day input:checked + span{background:var(--hi);color:#0A0A0A;border-color:var(--hi)}
+  .day input:focus-visible + span{box-shadow:0 0 0 2px var(--hi)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{position:relative}
+  .chip input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .chip span{display:inline-flex;align-items:center;min-height:48px;padding:0 16px;background:var(--panel);border:1px solid var(--line-2);font-size:16px;user-select:none}
+  .chip input:checked + span{background:var(--hi);color:#0A0A0A;border-color:var(--hi);font-weight:600}
+  .chip input:focus-visible + span{box-shadow:0 0 0 2px var(--hi)}
+
+  .ac{position:relative}
+  .sugg{position:absolute;left:0;right:0;z-index:20;background:#000;border:1px solid var(--hi);border-top:0;max-height:288px;overflow-y:auto}
+  .sugg div{min-height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;cursor:pointer;border-top:1px solid var(--line)}
+  .sugg div:first-child{border-top:0}
+  .sugg div.on,.sugg div:hover{background:var(--hi);color:#0A0A0A}
+  .sugg div .st{font-size:14px;color:var(--muted)}
+  .sugg div.on .st,.sugg div:hover .st{color:#0A0A0A}
+  .sugg .none{color:var(--muted);cursor:default}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+  .tags:empty{display:none}
+  .tag{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 6px 0 14px;background:var(--hi);color:#0A0A0A;font-weight:600;font-size:16px}
+  .tag button{background:none;border:0;color:#0A0A0A;font:inherit;font-size:22px;line-height:1;width:36px;height:36px;cursor:pointer}
+  .contact{background:var(--panel);border:1px solid var(--line-2);padding:16px;margin-top:12px}
+  .contact + .contact{margin-top:10px}
+  .addbtn{margin-top:12px;background:none;border:1px solid var(--line-2);color:var(--ink);font:inherit;font-size:16px;min-height:48px;padding:0 18px;cursor:pointer}
+  .addbtn:hover{border-color:var(--hi)}
+  .contact .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .contact .who{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .rm{background:none;border:1px solid var(--line-2);color:var(--ink-2);font:inherit;font-size:15px;min-height:44px;padding:0 14px;cursor:pointer}
+  .rm:hover{border-color:var(--bad);color:var(--bad)}
+
+  .auth{margin-top:22px;padding:18px 16px;background:var(--panel);border:1px solid var(--line-2)}
+  .auth .opt{background:transparent;border:0;padding:0;min-height:0}
+  .auth .opt b{font-weight:500}
+
+  .submit{margin-top:34px}
+  button.go{width:100%;min-height:64px;background:var(--hi);color:#0A0A0A;border:0;font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+  button.go:hover{background:var(--hi-2)}
+  button.go:disabled{opacity:.55;cursor:default}
+  .foot{color:var(--muted);font-size:14.5px;margin-top:14px}
+  .foot a{color:var(--hi)}
+
+  .done{display:none;padding:26px 0 0}
+  .done h2{margin-bottom:10px}
+  .done p{color:var(--ink-2);max-width:58ch}
+  .done .big{font-family:var(--display);font-size:28px;font-weight:700;color:var(--ink);margin:14px 0 0}
+
+  .hp{position:absolute;left:-9999px;top:-9999px;height:0;width:0;opacity:0}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="mark">R</div>
+    <div class="word">Receptly</div>
+  </header>
+
+  <p class="kicker">Set-up form</p>
+  <h1>Ten minutes.<br>Then we build it.</h1>
+  <p class="lead">Everything here is stuff you already know — where you work, when, what you charge to come out. <b>Nothing technical.</b> Save it once and we take it from there.</p>
+  <p class="lead">Your kick-off call is where we go through the judgement calls: what to say when someone asks for a job you don't do, what counts as an emergency for you. This form means that call is fifteen minutes, not forty-five.</p>
+
+  <div class="progress" aria-hidden="true"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+
+  <form id="intake" novalidate>
+    <input class="hp" type="text" name="website_url" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <input type="hidden" name="lead_id" id="lead_id">
+    <input type="hidden" name="abn" id="abn">
+    <input type="hidden" name="plan" id="plan">
+    <input type="hidden" name="source" value="intake-form">
+
+    <!-- 1 -->
+    <section>
+      <h2>The business</h2>
+      <p class="why">Most of this came through when you booked. Check it, change what's wrong.</p>
+
+      <div class="f">
+        <label class="l" for="entity">Registered business</label>
+        <p class="hint">From your ABN. Can't be edited here — if it's wrong, tell us on the kick-off call.</p>
+        <input type="text" id="entity" name="entity_name" readonly placeholder="Resolved from ABN at checkout">
+      </div>
+
+      <div class="f" data-req>
+        <label class="l" for="trading">Trading name <small>what callers hear when the phone is answered</small></label>
+        <input type="text" id="trading" name="trading_name" autocomplete="organization" placeholder="e.g. Smith Plumbing">
+        <div class="err">Give us the name you trade under.</div>
+      </div>
+
+      <div class="row">
+        <div class="f" data-req>
+          <label class="l" for="trade">Trade</label>
+          <select id="trade" name="trade">
+            <option value="">Pick one</option>
+            <option>Plumbing</option>
+            <option>Electrical</option>
+            <option>HVAC / air con</option>
+            <option>Roofing</option>
+            <option>Landscaping</option>
+            <option>Pest control</option>
+            <option>Locksmith</option>
+            <option>Building</option>
+          </select>
+          <div class="err">Pick your trade.</div>
+        </div>
+        <div class="f" data-req>
+          <label class="l" for="vans">On the tools</label>
+          <select id="vans" name="team_size">
+            <option value="">Pick one</option>
+            <option>Just me</option>
+            <option>2 to 3</option>
+            <option>4 to 6</option>
+            <option>7 to 15</option>
+            <option>More than 15</option>
+          </select>
+          <div class="err">How many on the tools?</div>
+        </div>
+      </div>
+
+      <div class="f" data-req data-chips="job_software">
+        <label class="l">Software you run the business on</label>
+        <p class="hint">Tap everything you use. Jobs and CRM both count. "Pen and paper" is a fine answer.</p>
+        <div class="chips" id="sw"></div>
+        <div class="err">Pick at least one.</div>
+      </div>
+      <div class="f" id="sw_other_wrap" hidden>
+        <label class="l" for="sw_other">What else do you use?</label>
+        <input type="text" id="sw_other" name="job_software_other" placeholder="Name of the software">
+        <div class="err">Tell us what it's called.</div>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section>
+      <h2>Where you work</h2>
+      <p class="why">So the receptionist says yes to the right suburbs and takes details for the rest rather than turning them away.</p>
+
+      <div class="f ac" data-req>
+        <label class="l" for="base">Home suburb</label>
+        <input type="text" id="base" name="base_suburb" autocomplete="off" placeholder="Start typing, then pick it">
+        <input type="hidden" name="base_state" id="base_state">
+        <input type="hidden" name="base_postcode" id="base_postcode">
+        <div class="sugg" id="base_sugg" hidden></div>
+        <div class="err">Where's the business based?</div>
+      </div>
+
+      <div class="f ac" data-req data-suburbs>
+        <label class="l" for="area">Suburbs you'll drive to</label>
+        <p class="hint">Type a suburb, tap it to add. Add as many as you like.</p>
+        <div class="tags" id="area_tags"></div>
+        <input type="text" id="area" autocomplete="off" placeholder="Start typing a suburb">
+        <div class="sugg" id="area_sugg" hidden></div>
+        <div class="err">Add at least one suburb, or describe the area below.</div>
+      </div>
+
+      <div class="f">
+        <label class="l" for="area_note">Or describe it <small>optional</small></label>
+        <input type="text" id="area_note" name="service_area_note" placeholder="e.g. anywhere within 30 minutes of Parramatta">
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section>
+      <h2>Hours</h2>
+      <p class="why">When you're on. The receptionist answers 24/7 either way — this decides what the receptionist promises.</p>
+
+      <div class="f" data-req data-days>
+        <label class="l">Days</label>
+        <div class="days" role="group" aria-label="Working days">
+          <label class="day"><input type="checkbox" name="days" value="Mon" checked><span>Mon</span></label>
+          <label class="day"><input type="checkbox" name="days" value="Tue" checked><span>Tue</span></label>
+          <label class="day"><input type="checkbox" name="days" value="Wed" checked><span>Wed</span></label>
+          <label class="day"><input type="checkbox" name="days" value="Thu" checked><span>Thu</span></label>
+          <label class="day"><input type="checkbox" name="days" value="Fri" checked><span>Fri</span></label>
+          <label class="day"><input type="checkbox" name="days" value="Sat"><span>Sat</span></label>
+          <label class="day"><input type="checkbox" name="days" value="Sun"><span>Sun</span></label>
+        </div>
+        <div class="err">Pick at least one day.</div>
+      </div>
+
+      <div class="row">
+        <div class="f" data-req>
+          <label class="l" for="start">Start</label>
+          <select id="start" name="hours_start">
+            <option>6:00 am</option><option selected>7:00 am</option><option>7:30 am</option><option>8:00 am</option><option>8:30 am</option><option>9:00 am</option>
+          </select>
+        </div>
+        <div class="f" data-req>
+          <label class="l" for="end">Finish</label>
+          <select id="end" name="hours_end">
+            <option>3:00 pm</option><option>3:30 pm</option><option selected>4:00 pm</option><option>4:30 pm</option><option>5:00 pm</option><option>5:30 pm</option><option>6:00 pm</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="f" data-req data-radio="after_hours">
+        <label class="l">Outside those hours</label>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="after_hours" value="callback_morning" checked><span><b>Take the details. I ring back in the morning.</b><small>The receptionist says so plainly and gets the job written up.</small></span></label>
+          <label class="opt"><input type="radio" name="after_hours" value="urgent_through"><span><b>Put the urgent ones through to me.</b><small>Whatever you mark as urgent below rings your mobile. Everything else waits.</small></span></label>
+          <label class="opt"><input type="radio" name="after_hours" value="no_after_hours"><span><b>I don't do after hours.</b><small>The receptionist takes the details, says you'll ring next business day, and doesn't promise anything else.</small></span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section>
+      <h2>The jobs</h2>
+      <p class="why">What you do, what you don't, and what's urgent. This is where most receptionists get it wrong.</p>
+
+      <div class="f" data-req data-chips="services">
+        <label class="l">What you do</label>
+        <p class="hint">Tap everything that applies. Add anything missing below.</p>
+        <div class="chips" id="services"></div>
+        <div class="err">Pick at least one.</div>
+      </div>
+
+      <div class="f">
+        <label class="l" for="services_other">Anything else you do <small>optional</small></label>
+        <input type="text" id="services_other" name="services_other" placeholder="e.g. backflow testing, rainwater tanks">
+      </div>
+
+      <div class="f">
+        <label class="l" for="dont">Things you don't do <small>optional, but useful</small></label>
+        <p class="hint">So callers are told no properly instead of booking a job you'll have to cancel.</p>
+        <textarea id="dont" name="services_exclude" placeholder="e.g. no gas work, no commercial, nothing above two storeys"></textarea>
+      </div>
+
+      <div class="f" data-req data-chips="urgent">
+        <label class="l">What counts as urgent for you</label>
+        <p class="hint">These get flagged and, if you chose it above, put straight through after hours.</p>
+        <div class="chips" id="urgent"></div>
+        <div class="err">Pick at least one.</div>
+      </div>
+
+      <div class="f">
+        <label class="l" for="urgent_other">Anything else that's urgent for you <small>optional</small></label>
+        <input type="text" id="urgent_other" name="urgent_other" placeholder="e.g. any job at the hospital, strata emergencies">
+      </div>
+
+      <div class="f">
+        <label class="l" for="callout">Call-out fee <small>optional</small></label>
+        <p class="hint">The one price the receptionist can quote. Leave blank and callers are told you confirm pricing on site.</p>
+        <input type="text" id="callout" name="callout_fee" inputmode="decimal" placeholder="e.g. 120">
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section>
+      <h2>Who gets the jobs</h2>
+      <p class="why">Every job that comes in lands as a text and an email. Who should they go to? Up to three people. Job alerts go to every mobile and email listed. The weekly report goes to the first person.</p>
+
+      <div id="contacts">
+        <div class="contact" data-n="1">
+          <div class="row">
+            <div class="f" data-req style="margin-top:0">
+              <label class="l" for="c1_name">Name</label>
+              <input type="text" id="c1_name" name="contact_name[]" autocomplete="name" placeholder="Who's on the phone">
+              <div class="err">Need a name.</div>
+            </div>
+            <div class="f" data-req data-mobile style="margin-top:0">
+              <label class="l" for="c1_mobile">Mobile</label>
+              <input type="tel" id="c1_mobile" name="contact_mobile[]" inputmode="tel" autocomplete="tel" placeholder="04xx xxx xxx">
+              <div class="err">Australian mobile, 04 and ten digits.</div>
+            </div>
+          </div>
+          <div class="f" data-req data-email style="margin-top:14px">
+            <label class="l" for="c1_email">Email <small>job details and the weekly report</small></label>
+            <input type="email" id="c1_email" name="contact_email[]" inputmode="email" autocomplete="email" placeholder="you@yourbusiness.com.au">
+            <div class="err">Need a working email.</div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="addbtn" id="addcontact">+ Add another person</button>
+
+      <div class="f">
+        <label class="l" for="notes">Anything the receptionist should know <small>optional</small></label>
+        <p class="hint">How you like to be described, a name that gets mispronounced, a suburb you won't go back to. Anything.</p>
+        <textarea id="notes" name="notes" placeholder="We're a family business, been going 22 years. Say 'Smith's' not 'Smith Plumbing'."></textarea>
+      </div>
+
+      <div class="auth">
+        <div class="f" data-req data-check style="margin-top:0">
+          <label class="opt"><input type="checkbox" name="authority" id="authority" value="yes"><span><b>I'm authorised to set up a phone number for this business, and the details above are right.</b><small>We register your number with the carrier under your ABN. This is the record of who said yes.</small></span></label>
+          <div class="err">We can't register a number without this.</div>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <div class="f" data-req style="margin-top:0">
+            <label class="l" for="auth_name">Your name</label>
+            <input type="text" id="auth_name" name="authority_name" autocomplete="name">
+            <div class="err">Your name.</div>
+          </div>
+          <div class="f" data-req style="margin-top:0">
+            <label class="l" for="auth_role">Your role</label>
+            <input type="text" id="auth_role" name="authority_role" placeholder="Owner, director, manager">
+            <div class="err">Your role.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="submit">
+      <button type="submit" class="go" id="go">Save and build it</button>
+      <p class="foot">Nothing here goes anywhere but us. Your kick-off call is already booked — check your texts for the time. <a href="/privacy/">Privacy</a>.</p>
+    </div>
+  </form>
+
+  <div class="done" id="done">
+    <h2>Got it.</h2>
+    <p>We're building your receptionist now. Your number stays exactly as it is — nothing changes on your van or your Google listing.</p>
+    <p class="big" id="done_next"></p>
+    <p>If anything above is wrong, tell us on the call. Nothing's locked in until you've heard it answer.</p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var ENDPOINT = 'https://n8n.agentivegroup.ai/webhook/receptly-intake';
+
+  var SERVICES = {
+    'Plumbing':      ['Burst or leaking pipe','No hot water','Blocked drain or toilet','Gas fitting','Tap or toilet repair','Hot water replacement','Roof plumbing and gutters','New install or renovation'],
+    'Electrical':    ['Power out','Switchboard and safety switches','Lights and power points','Smoke alarms','Ceiling fans','Hot water electrical','EV charger','New install or renovation'],
+    'HVAC / air con':['Split system install','Ducted install','Not cooling or heating','Service and clean','Gas heater','Commercial'],
+    'Roofing':       ['Leak','Storm damage','Gutter repair or replace','Re-roof','Skylight','Inspection'],
+    'Landscaping':   ['Lawns and mowing','Garden clean-up','Retaining walls','Paving','Turf','Irrigation','Tree removal'],
+    'Pest control':  ['Termites','Ants and cockroaches','Rodents','Spiders','Wasps and bees','Pre-purchase inspection'],
+    'Locksmith':     ['Locked out','Lock change','Rekey','Broken key','Safe','Commercial'],
+    'Building':      ['Renovation','Extension','Deck or pergola','Bathroom','Kitchen','Repairs and maintenance']
+  };
+  var URGENT = {
+    'Plumbing':      ['Gas smell','Water through a ceiling','Burst pipe or mains','Sewage inside','No water at all','Water near power','Hot water system leaking','Only toilet in the house blocked','Flooding'],
+    'Electrical':    ['Sparks, smoke or burning smell','Total power loss','Exposed live wires','Water near power','Switchboard tripping repeatedly','Storm damage to wiring','No power to medical equipment','Hot water off'],
+    'HVAC / air con':['Gas smell','Water leaking from unit','No cooling in a heatwave','No heating in a cold snap','Unit sparking or burning smell','Aged care or medical need','Commercial site down'],
+    'Roofing':       ['Active leak','Storm damage','Ceiling bulging with water','Tree through the roof','Sheets or tiles loose in wind','Tarp needed today'],
+    'Landscaping':   ['Tree down','Retaining wall failing','Flooding','Fence down with pets or kids','Irrigation burst','Dangerous branch over a house'],
+    'Pest control':  ['Wasp or bee nest near people','Rodents in food areas','Termite swarm','Infestation in a commercial kitchen','Bed bugs in accommodation','Spider bite risk to kids'],
+    'Locksmith':     ['Locked out','Break-in','Child or pet locked inside','Lock broken, house can\'t be secured','Lost keys after hours','Business can\'t open'],
+    'Building':      ['Structural damage','Storm damage','Unsafe to occupy','Water coming in','Break-in needs boarding up','Wall or ceiling collapse risk']
+  };
+  var GENERIC = ['Emergency call-out','Same-day job','Quote','Repair','Install','Maintenance'];
+  var GENERIC_URGENT = ['Safety risk','Property damage happening now','Can\'t use the premises','Gas smell','Water leak','No power','No water','Locked out','Break-in','Storm damage'];
+
+  var $ = function(s,c){return (c||document).querySelector(s)};
+  var $$ = function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+  var form = $('#intake');
+
+  // ---- prefill from URL (n8n builds this link) ----
+  var q = new URLSearchParams(location.search);
+  var set = function(id,v){ if(v){ var el=$('#'+id); if(el) el.value=v; } };
+  set('lead_id', q.get('lead'));
+  set('abn', q.get('abn'));
+  set('plan', q.get('plan'));
+  set('entity', q.get('entity'));
+  set('trading', q.get('name'));
+  set('base', q.get('city'));
+  set('c1_email', q.get('email'));
+  set('c1_mobile', q.get('mobile'));
+  set('c1_name', q.get('first'));
+  if(q.get('trade')){ $('#trade').value = q.get('trade'); }
+  if(q.get('vans')){ $('#vans').value = q.get('vans'); }
+  // job software chips (multi-select)
+  var SOFTWARE = ['Pen and paper / diary','Google Calendar','ServiceM8','simPRO','Fergus','AroFlo','Tradify','Jobber','Ascora','HubSpot','Pipedrive','Zoho','Something else'];
+  (function(){
+    var c = $('#sw'); c.innerHTML='';
+    SOFTWARE.forEach(function(t,i){
+      var l = document.createElement('label'); l.className='chip';
+      var v = t==='Something else' ? 'other' : t;
+      l.innerHTML = '<input type="checkbox" name="job_software" id="sw_'+i+'" value="'+v+'"><span>'+t+'</span>';
+      c.appendChild(l);
+    });
+    if(q.get('sw')){
+      q.get('sw').split(',').forEach(function(swv){
+        swv = swv.trim(); if(!swv) return;
+        var hit = $$('#sw input').filter(function(i){ return i.value.toLowerCase()===swv.toLowerCase(); })[0];
+        if(hit) hit.checked = true;
+        else { $('#sw input[value=other]').checked = true; $('#sw_other').value = ($('#sw_other').value ? $('#sw_other').value+', ' : '') + swv; }
+      });
+    }
+  })();
+
+  // ---- chips per trade ----
+  function chips(container, list, name){
+    container.innerHTML = '';
+    list.forEach(function(t,i){
+      var id = name+'_'+i;
+      var l = document.createElement('label'); l.className='chip';
+      l.innerHTML = '<input type="checkbox" name="'+name+'" id="'+id+'" value="'+t.replace(/"/g,'&quot;')+'"><span>'+t+'</span>';
+      container.appendChild(l);
+    });
+  }
+  function renderChips(){
+    var t = $('#trade').value;
+    chips($('#services'), SERVICES[t] || GENERIC, 'services');
+    chips($('#urgent'),   URGENT[t]   || GENERIC_URGENT, 'urgent');
+  }
+  $('#trade').addEventListener('change', renderChips);
+  renderChips();
+
+  // ---- job software "other" ----
+  function swOther(){
+    var other = $('#sw input[value=other]').checked;
+    $('#sw_other_wrap').hidden = !other;
+    $('#sw_other_wrap').toggleAttribute('data-req', other);
+  }
+  $('#sw').addEventListener('change', swOther);
+  swOther();
+
+  // ---- suburb autocomplete (all Australian localities, lazy-loaded) ----
+  var SUBURBS = null, subLoading = null, AREA = [];
+  function loadSuburbs(){
+    if(SUBURBS || subLoading) return subLoading || Promise.resolve(SUBURBS);
+    var tryUrls = ['suburbs.json'];
+    subLoading = tryUrls.reduce(function(pr,u){ return pr.catch(function(){ return fetch(u,{cache:'force-cache'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }); }); }, Promise.reject())
+      .then(function(d){ SUBURBS = d; return d; })
+      .catch(function(){ SUBURBS = []; return SUBURBS; });
+    return subLoading;
+  }
+  function matchSuburbs(term, prefState){
+    if(!SUBURBS || !term) return [];
+    var t = term.toLowerCase(), hits = [];
+    for(var i=0;i<SUBURBS.length && hits.length<40;i++){ if(SUBURBS[i][0].toLowerCase().indexOf(t)===0) hits.push(SUBURBS[i]); }
+    hits.sort(function(a,b){
+      var ea = a[0].toLowerCase()===t ? 0 : 1, eb = b[0].toLowerCase()===t ? 0 : 1;
+      if(ea!==eb) return ea-eb;
+      if(prefState && (a[1]===prefState)!==(b[1]===prefState)) return a[1]===prefState ? -1 : 1;
+      if((a[3]||0)!==(b[3]||0)) return (b[3]||0)-(a[3]||0);
+      return a[0].localeCompare(b[0]);
+    });
+    return hits.slice(0,8);
+  }
+  function autocomplete(input, box, onPick){
+    var idx = -1, items = [];
+    function close(){ box.hidden = true; box.innerHTML=''; idx=-1; items=[]; }
+    function render(){
+      box.innerHTML = '';
+      if(!items.length){ if(input.value.trim().length>=2 && SUBURBS){ box.innerHTML='<div class="none">No suburb found. Check the spelling.</div>'; box.hidden=false; } else close(); return; }
+      items.forEach(function(s,i){
+        var d = document.createElement('div'); d.className = i===idx?'on':'';
+        d.innerHTML = '<span>'+s[0]+'</span><span class="st">'+s[1]+' '+s[2]+'</span>';
+        d.addEventListener('mousedown', function(e){ e.preventDefault(); onPick(s); close(); });
+        box.appendChild(d);
+      });
+      box.hidden = false;
+    }
+    input.addEventListener('focus', function(){ loadSuburbs(); });
+    input.addEventListener('input', function(){
+      var v = input.value.trim();
+      if(v.length<2){ close(); return; }
+      loadSuburbs().then(function(){ items = matchSuburbs(v, $('#base_state').value || (AREA.length ? AREA[AREA.length-1][1] : '')); idx = items.length?0:-1; render(); });
+    });
+    input.addEventListener('keydown', function(e){
+      if(box.hidden) return;
+      if(e.key==='ArrowDown'){ e.preventDefault(); idx=Math.min(idx+1,items.length-1); render(); }
+      else if(e.key==='ArrowUp'){ e.preventDefault(); idx=Math.max(idx-1,0); render(); }
+      else if(e.key==='Enter'){ e.preventDefault(); if(items[idx]){ onPick(items[idx]); close(); } }
+      else if(e.key==='Escape'){ close(); }
+    });
+    input.addEventListener('blur', function(){ setTimeout(close,150); });
+  }
+  // home suburb: single pick
+  autocomplete($('#base'), $('#base_sugg'), function(s){
+    $('#base').value = s[0]; $('#base_state').value = s[1]; $('#base_postcode').value = s[2];
+  });
+  $('#base').addEventListener('input', function(){ $('#base_state').value=''; $('#base_postcode').value=''; });
+  // service area: tags
+  function renderTags(){
+    var t = $('#area_tags'); t.innerHTML='';
+    AREA.forEach(function(s,i){
+      var d = document.createElement('span'); d.className='tag';
+      d.innerHTML = s[0]+' <small>'+s[1]+'</small><button type="button" aria-label="Remove '+s[0]+'">&times;</button>';
+      d.querySelector('button').addEventListener('click', function(){ AREA.splice(i,1); renderTags(); });
+      t.appendChild(d);
+    });
+    try{ localStorage.setItem('receptly_intake_area', JSON.stringify(AREA)); }catch(_){}
+  }
+  autocomplete($('#area'), $('#area_sugg'), function(s){
+    if(!AREA.some(function(a){ return a[0]===s[0] && a[1]===s[1]; })) AREA.push(s);
+    renderTags(); $('#area').value=''; $('#area').focus(); $('#area').closest('.f').classList.remove('bad');
+  });
+  try{ var savedArea = JSON.parse(localStorage.getItem('receptly_intake_area')||'[]'); if(Array.isArray(savedArea)){ AREA = savedArea; renderTags(); } }catch(_){}
+
+  // ---- extra contacts (up to 3), removable ----
+  var MAXC = 3;
+  function contactCount(){ return $$('#contacts .contact').length; }
+  function refreshAdd(){ $('#addcontact').hidden = contactCount() >= MAXC; }
+  $('#addcontact').addEventListener('click', function(){
+    var n = contactCount() + 1;
+    var d = document.createElement('div'); d.className='contact';
+    d.innerHTML = '<div class="top"><span class="who">Person '+n+'</span><button type="button" class="rm">Remove</button></div>'+
+      '<div class="row">'+
+      '<div class="f" data-req style="margin-top:0"><label class="l" for="c'+n+'_name">Name</label><input type="text" id="c'+n+'_name" name="contact_name[]" placeholder="Name"><div class="err">Need a name.</div></div>'+
+      '<div class="f" data-req data-mobile style="margin-top:0"><label class="l" for="c'+n+'_mobile">Mobile</label><input type="tel" id="c'+n+'_mobile" name="contact_mobile[]" inputmode="tel" placeholder="04xx xxx xxx"><div class="err">Australian mobile, 04 and ten digits.</div></div>'+
+      '</div>'+
+      '<div class="f" data-email-opt style="margin-top:14px"><label class="l" for="c'+n+'_email">Email <small>optional</small></label><input type="email" id="c'+n+'_email" name="contact_email[]" inputmode="email" placeholder="Leave blank for texts only"><div class="err">That email doesn\'t look right.</div></div>';
+    $('#contacts').appendChild(d);
+    d.querySelector('.rm').addEventListener('click', function(){ d.remove(); refreshAdd(); });
+    $$('input', d).forEach(function(el){
+      el.addEventListener('input', function(){ var f = el.closest('.f'); if(f) f.classList.remove('bad'); });
+    });
+    refreshAdd();
+    $('#c'+n+'_name').focus();
+  });
+  refreshAdd();
+
+  // ---- progress bar by scroll ----
+  var secs = $$('section'), bars = $$('.progress span');
+  function prog(){
+    var y = window.scrollY + window.innerHeight*0.45, i=0;
+    secs.forEach(function(s,k){ if(s.offsetTop <= y) i=k; });
+    bars.forEach(function(b,k){ b.classList.toggle('on', k<=i); });
+  }
+  window.addEventListener('scroll', prog, {passive:true}); prog();
+
+  // ---- validation ----
+  var AU_MOBILE = /^(\+?61|0)4\d{8}$/;
+  function clean(v){ return (v||'').replace(/[\s\-()]/g,''); }
+  function validate(){
+    var ok = true, first = null;
+    $$('[data-req],[data-email-opt]', form).forEach(function(f){
+      if(f.hidden) return;
+      var bad = false;
+      if(f.hasAttribute('data-email-opt') && !f.hasAttribute('data-req')){ var ov0 = $('input', f).value.trim(); bad = !!ov0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ov0); }
+      else if(f.hasAttribute('data-days')){ bad = !$$('input[name=days]:checked', f).length; }
+      else if(f.hasAttribute('data-suburbs')){ bad = !AREA.length && !$('#area_note').value.trim(); }
+      else if(f.hasAttribute('data-chips')){ bad = !$$('input[type=checkbox]:checked', f).length; }
+      else if(f.hasAttribute('data-radio')){ bad = !$('input:checked', f); }
+      else if(f.hasAttribute('data-check')){ bad = !$('#authority').checked; }
+      else {
+        var el = $('input,select,textarea', f);
+        var v = el.value.trim();
+        if(!v) bad = true;
+        else if(f.hasAttribute('data-mobile')) bad = !AU_MOBILE.test(clean(v));
+        else if(f.hasAttribute('data-email')) bad = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      }
+      f.classList.toggle('bad', bad);
+      if(bad){ ok=false; first = first || f; }
+    });
+    if(first){ first.scrollIntoView({behavior:'smooth', block:'center'}); }
+    return ok;
+  }
+  $$('input,select,textarea', form).forEach(function(el){
+    el.addEventListener('input', function(){ var f = el.closest('.f'); if(f) f.classList.remove('bad'); });
+    el.addEventListener('change', function(){ var f = el.closest('.f'); if(f) f.classList.remove('bad'); });
+  });
+
+  // ---- serialise ----
+  function payload(){
+    var fd = new FormData(form), out = {};
+    fd.forEach(function(v,k){
+      if(k.slice(-2)==='[]'){ var kk=k.slice(0,-2); (out[kk]=out[kk]||[]).push(v); }
+      else if(k==='days'||k==='services'||k==='urgent'||k==='job_software'){ (out[k]=out[k]||[]).push(v); }
+      else out[k]=v;
+    });
+    out.contacts = (out.contact_name||[]).map(function(n,i){ return {name:n, mobile: clean((out.contact_mobile||[])[i]||''), email: ((out.contact_email||[])[i]||'').trim()}; });
+    out.report_email = out.contacts.length ? out.contacts[0].email : '';
+    out.service_suburbs = AREA.map(function(s){ return {suburb:s[0], state:s[1], postcode:s[2]}; });
+    out.job_software = out.job_software || [];
+    delete out.contact_name; delete out.contact_mobile; delete out.contact_email;
+    out.submitted_at = new Date().toISOString();
+    out.user_agent = navigator.userAgent;
+    out.page = location.href;
+    return out;
+  }
+
+  // ---- submit ----
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if($('.hp').value) return; // bot
+    if(!validate()) return;
+    var btn = $('#go'); btn.disabled = true; btn.textContent = 'Saving…';
+    var body = payload();
+    fetch(ENDPOINT, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)})
+      .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json().catch(function(){return {};}); })
+      .then(function(){
+        form.hidden = true;
+        $('#done_next').textContent = 'Kick-off call: ' + (q.get('kickoff') || 'as texted to you');
+        var d = $('#done'); d.style.display='block'; d.scrollIntoView({behavior:'smooth', block:'start'});
+        try{ localStorage.removeItem('receptly_intake_draft'); localStorage.removeItem('receptly_intake_area'); }catch(_){}
+      })
+      .catch(function(){
+        btn.disabled = false; btn.textContent = 'Save and build it';
+        alert('That didn\'t save. Check your signal and try again — nothing was lost.');
+      });
+  });
+
+  // ---- draft autosave (per device) ----
+  try{
+    var saved = localStorage.getItem('receptly_intake_draft');
+    if(saved){
+      var d = JSON.parse(saved);
+      Object.keys(d).forEach(function(k){ var el = form.elements[k]; if(el && !el.value && typeof d[k]==='string') el.value = d[k]; });
+      swOther();
+    }
+    form.addEventListener('input', function(){
+      var o = {}; ['trading_name','base_suburb','service_area_note','services_other','services_exclude','callout_fee','urgent_other','notes','authority_name','authority_role','job_software_other'].forEach(function(k){ var el=form.elements[k]; if(el) o[k]=el.value; });
+      localStorage.setItem('receptly_intake_draft', JSON.stringify(o));
+    });
+  }catch(_){}
+})();
+</script>
+</body>
+</html>
