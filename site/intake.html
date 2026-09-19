@@ -93,10 +93,26 @@
   .chip input:checked + span{background:var(--hi);color:#0A0A0A;border-color:var(--hi);font-weight:600}
   .chip input:focus-visible + span{box-shadow:0 0 0 2px var(--hi)}
 
+  .ac{position:relative}
+  .sugg{position:absolute;left:0;right:0;z-index:20;background:#000;border:1px solid var(--hi);border-top:0;max-height:288px;overflow-y:auto}
+  .sugg div{min-height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;cursor:pointer;border-top:1px solid var(--line)}
+  .sugg div:first-child{border-top:0}
+  .sugg div.on,.sugg div:hover{background:var(--hi);color:#0A0A0A}
+  .sugg div .st{font-size:14px;color:var(--muted)}
+  .sugg div.on .st,.sugg div:hover .st{color:#0A0A0A}
+  .sugg .none{color:var(--muted);cursor:default}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+  .tags:empty{display:none}
+  .tag{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 6px 0 14px;background:var(--hi);color:#0A0A0A;font-weight:600;font-size:16px}
+  .tag button{background:none;border:0;color:#0A0A0A;font:inherit;font-size:22px;line-height:1;width:36px;height:36px;cursor:pointer}
   .contact{background:var(--panel);border:1px solid var(--line-2);padding:16px;margin-top:12px}
   .contact + .contact{margin-top:10px}
   .addbtn{margin-top:12px;background:none;border:1px solid var(--line-2);color:var(--ink);font:inherit;font-size:16px;min-height:48px;padding:0 18px;cursor:pointer}
   .addbtn:hover{border-color:var(--hi)}
+  .contact .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .contact .who{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .rm{background:none;border:1px solid var(--line-2);color:var(--ink-2);font:inherit;font-size:15px;min-height:44px;padding:0 14px;cursor:pointer}
+  .rm:hover{border-color:var(--bad);color:var(--bad)}
 
   .auth{margin-top:22px;padding:18px 16px;background:var(--panel);border:1px solid var(--line-2)}
   .auth .opt{background:transparent;border:0;padding:0;min-height:0}
@@ -152,7 +168,7 @@
       </div>
 
       <div class="f" data-req>
-        <label class="l" for="trading">Trading name <small>what the receptionist says when she picks up</small></label>
+        <label class="l" for="trading">Trading name <small>what callers hear when the phone is answered</small></label>
         <input type="text" id="trading" name="trading_name" autocomplete="organization" placeholder="e.g. Smith Plumbing">
         <div class="err">Give us the name you trade under.</div>
       </div>
@@ -187,25 +203,14 @@
         </div>
       </div>
 
-      <div class="f" data-req>
-        <label class="l" for="sw">Job software you use</label>
-        <select id="sw" name="job_software">
-          <option value="">Pick one</option>
-          <option>Pen and paper / diary</option>
-          <option>Google Calendar</option>
-          <option>ServiceM8</option>
-          <option>simPRO</option>
-          <option>Fergus</option>
-          <option>AroFlo</option>
-          <option>Tradify</option>
-          <option>Jobber</option>
-          <option>Ascora</option>
-          <option value="other">Something else</option>
-        </select>
-        <div class="err">Pick one — "Pen and paper" is a fine answer.</div>
+      <div class="f" data-req data-chips="job_software">
+        <label class="l">Software you run the business on</label>
+        <p class="hint">Tap everything you use. Jobs and CRM both count. "Pen and paper" is a fine answer.</p>
+        <div class="chips" id="sw"></div>
+        <div class="err">Pick at least one.</div>
       </div>
       <div class="f" id="sw_other_wrap" hidden>
-        <label class="l" for="sw_other">What do you use?</label>
+        <label class="l" for="sw_other">What else do you use?</label>
         <input type="text" id="sw_other" name="job_software_other" placeholder="Name of the software">
         <div class="err">Tell us what it's called.</div>
       </div>
@@ -216,24 +221,34 @@
       <h2>Where you work</h2>
       <p class="why">So the receptionist says yes to the right suburbs and takes details for the rest rather than turning them away.</p>
 
-      <div class="f" data-req>
+      <div class="f ac" data-req>
         <label class="l" for="base">Home suburb</label>
-        <input type="text" id="base" name="base_suburb" autocomplete="address-level2" placeholder="e.g. Parramatta">
+        <input type="text" id="base" name="base_suburb" autocomplete="off" placeholder="Start typing, then pick it">
+        <input type="hidden" name="base_state" id="base_state">
+        <input type="hidden" name="base_postcode" id="base_postcode">
+        <div class="sugg" id="base_sugg" hidden></div>
         <div class="err">Where's the business based?</div>
       </div>
 
-      <div class="f" data-req>
+      <div class="f ac" data-req data-suburbs>
         <label class="l" for="area">Suburbs you'll drive to</label>
-        <p class="hint">List them, or say "anywhere within 30 minutes of Parramatta". Rough is fine.</p>
-        <textarea id="area" name="service_area" placeholder="Parramatta, Blacktown, Castle Hill, Baulkham Hills…"></textarea>
-        <div class="err">Give us a rough service area.</div>
+        <p class="hint">Type a suburb, tap it to add. Add as many as you like.</p>
+        <div class="tags" id="area_tags"></div>
+        <input type="text" id="area" autocomplete="off" placeholder="Start typing a suburb">
+        <div class="sugg" id="area_sugg" hidden></div>
+        <div class="err">Add at least one suburb, or describe the area below.</div>
+      </div>
+
+      <div class="f">
+        <label class="l" for="area_note">Or describe it <small>optional</small></label>
+        <input type="text" id="area_note" name="service_area_note" placeholder="e.g. anywhere within 30 minutes of Parramatta">
       </div>
     </section>
 
     <!-- 3 -->
     <section>
       <h2>Hours</h2>
-      <p class="why">When you're on. The receptionist answers 24/7 either way — this decides what she promises.</p>
+      <p class="why">When you're on. The receptionist answers 24/7 either way — this decides what the receptionist promises.</p>
 
       <div class="f" data-req data-days>
         <label class="l">Days</label>
@@ -269,7 +284,7 @@
         <div class="opts">
           <label class="opt"><input type="radio" name="after_hours" value="callback_morning" checked><span><b>Take the details. I ring back in the morning.</b><small>The receptionist says so plainly and gets the job written up.</small></span></label>
           <label class="opt"><input type="radio" name="after_hours" value="urgent_through"><span><b>Put the urgent ones through to me.</b><small>Whatever you mark as urgent below rings your mobile. Everything else waits.</small></span></label>
-          <label class="opt"><input type="radio" name="after_hours" value="no_after_hours"><span><b>I don't do after hours.</b><small>She takes the details, says you'll ring next business day, and doesn't promise anything else.</small></span></label>
+          <label class="opt"><input type="radio" name="after_hours" value="no_after_hours"><span><b>I don't do after hours.</b><small>The receptionist takes the details, says you'll ring next business day, and doesn't promise anything else.</small></span></label>
         </div>
       </div>
     </section>
@@ -293,7 +308,7 @@
 
       <div class="f">
         <label class="l" for="dont">Things you don't do <small>optional, but useful</small></label>
-        <p class="hint">So she says no properly instead of taking a job you'll have to cancel.</p>
+        <p class="hint">So callers are told no properly instead of booking a job you'll have to cancel.</p>
         <textarea id="dont" name="services_exclude" placeholder="e.g. no gas work, no commercial, nothing above two storeys"></textarea>
       </div>
 
@@ -305,8 +320,13 @@
       </div>
 
       <div class="f">
+        <label class="l" for="urgent_other">Anything else that's urgent for you <small>optional</small></label>
+        <input type="text" id="urgent_other" name="urgent_other" placeholder="e.g. any job at the hospital, strata emergencies">
+      </div>
+
+      <div class="f">
         <label class="l" for="callout">Call-out fee <small>optional</small></label>
-        <p class="hint">The one price she's allowed to say. Leave blank and she says you confirm pricing on site.</p>
+        <p class="hint">The one price the receptionist can quote. Leave blank and callers are told you confirm pricing on site.</p>
         <input type="text" id="callout" name="callout_fee" inputmode="decimal" placeholder="e.g. 120">
       </div>
     </section>
@@ -314,10 +334,10 @@
     <!-- 5 -->
     <section>
       <h2>Who gets the jobs</h2>
-      <p class="why">Every job she takes lands as a text and an email. Who should they go to?</p>
+      <p class="why">Every job that comes in lands as a text and an email. Who should they go to? Up to three people. Job alerts go to every mobile and email listed. The weekly report goes to the first person.</p>
 
       <div id="contacts">
-        <div class="contact">
+        <div class="contact" data-n="1">
           <div class="row">
             <div class="f" data-req style="margin-top:0">
               <label class="l" for="c1_name">Name</label>
@@ -330,15 +350,14 @@
               <div class="err">Australian mobile, 04 and ten digits.</div>
             </div>
           </div>
+          <div class="f" data-req data-email style="margin-top:14px">
+            <label class="l" for="c1_email">Email <small>job details and the weekly report</small></label>
+            <input type="email" id="c1_email" name="contact_email[]" inputmode="email" autocomplete="email" placeholder="you@yourbusiness.com.au">
+            <div class="err">Need a working email.</div>
+          </div>
         </div>
       </div>
-      <button type="button" class="addbtn" id="addcontact">+ Add a second person</button>
-
-      <div class="f" data-req data-email>
-        <label class="l" for="email">Email for job details and the weekly report</label>
-        <input type="email" id="email" name="report_email" inputmode="email" autocomplete="email" placeholder="you@yourbusiness.com.au">
-        <div class="err">Need a working email.</div>
-      </div>
+      <button type="button" class="addbtn" id="addcontact">+ Add another person</button>
 
       <div class="f">
         <label class="l" for="notes">Anything the receptionist should know <small>optional</small></label>
@@ -397,17 +416,17 @@
     'Building':      ['Renovation','Extension','Deck or pergola','Bathroom','Kitchen','Repairs and maintenance']
   };
   var URGENT = {
-    'Plumbing':      ['Gas smell','Water through a ceiling','Burst pipe or mains','Sewage inside','No water at all','Water near power'],
-    'Electrical':    ['Sparks, smoke or burning smell','Total power loss','Exposed live wires','Water near power','Switchboard tripping repeatedly'],
-    'HVAC / air con':['Gas smell','Water leaking from unit','No cooling in a heatwave','No heating in a cold snap'],
-    'Roofing':       ['Active leak','Storm damage','Ceiling bulging with water'],
-    'Landscaping':   ['Tree down','Retaining wall failing','Flooding'],
-    'Pest control':  ['Wasp or bee nest near people','Rodents in food areas','Termite swarm'],
-    'Locksmith':     ['Locked out','Break-in','Child or pet locked inside'],
-    'Building':      ['Structural damage','Storm damage','Unsafe to occupy']
+    'Plumbing':      ['Gas smell','Water through a ceiling','Burst pipe or mains','Sewage inside','No water at all','Water near power','Hot water system leaking','Only toilet in the house blocked','Flooding'],
+    'Electrical':    ['Sparks, smoke or burning smell','Total power loss','Exposed live wires','Water near power','Switchboard tripping repeatedly','Storm damage to wiring','No power to medical equipment','Hot water off'],
+    'HVAC / air con':['Gas smell','Water leaking from unit','No cooling in a heatwave','No heating in a cold snap','Unit sparking or burning smell','Aged care or medical need','Commercial site down'],
+    'Roofing':       ['Active leak','Storm damage','Ceiling bulging with water','Tree through the roof','Sheets or tiles loose in wind','Tarp needed today'],
+    'Landscaping':   ['Tree down','Retaining wall failing','Flooding','Fence down with pets or kids','Irrigation burst','Dangerous branch over a house'],
+    'Pest control':  ['Wasp or bee nest near people','Rodents in food areas','Termite swarm','Infestation in a commercial kitchen','Bed bugs in accommodation','Spider bite risk to kids'],
+    'Locksmith':     ['Locked out','Break-in','Child or pet locked inside','Lock broken, house can\'t be secured','Lost keys after hours','Business can\'t open'],
+    'Building':      ['Structural damage','Storm damage','Unsafe to occupy','Water coming in','Break-in needs boarding up','Wall or ceiling collapse risk']
   };
   var GENERIC = ['Emergency call-out','Same-day job','Quote','Repair','Install','Maintenance'];
-  var GENERIC_URGENT = ['Safety risk','Property damage happening now','Can\'t use the premises'];
+  var GENERIC_URGENT = ['Safety risk','Property damage happening now','Can\'t use the premises','Gas smell','Water leak','No power','No water','Locked out','Break-in','Storm damage'];
 
   var $ = function(s,c){return (c||document).querySelector(s)};
   var $$ = function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
@@ -422,17 +441,30 @@
   set('entity', q.get('entity'));
   set('trading', q.get('name'));
   set('base', q.get('city'));
-  set('email', q.get('email'));
+  set('c1_email', q.get('email'));
   set('c1_mobile', q.get('mobile'));
   set('c1_name', q.get('first'));
   if(q.get('trade')){ $('#trade').value = q.get('trade'); }
   if(q.get('vans')){ $('#vans').value = q.get('vans'); }
-  if(q.get('sw')){
-    var swv = q.get('sw');
-    var hit = $$('#sw option').some(function(o){ return o.text===swv || o.value===swv; });
-    $('#sw').value = hit ? swv : 'other';
-    if(!hit){ $('#sw_other').value = swv; }
-  }
+  // job software chips (multi-select)
+  var SOFTWARE = ['Pen and paper / diary','Google Calendar','ServiceM8','simPRO','Fergus','AroFlo','Tradify','Jobber','Ascora','HubSpot','Pipedrive','Zoho','Something else'];
+  (function(){
+    var c = $('#sw'); c.innerHTML='';
+    SOFTWARE.forEach(function(t,i){
+      var l = document.createElement('label'); l.className='chip';
+      var v = t==='Something else' ? 'other' : t;
+      l.innerHTML = '<input type="checkbox" name="job_software" id="sw_'+i+'" value="'+v+'"><span>'+t+'</span>';
+      c.appendChild(l);
+    });
+    if(q.get('sw')){
+      q.get('sw').split(',').forEach(function(swv){
+        swv = swv.trim(); if(!swv) return;
+        var hit = $$('#sw input').filter(function(i){ return i.value.toLowerCase()===swv.toLowerCase(); })[0];
+        if(hit) hit.checked = true;
+        else { $('#sw input[value=other]').checked = true; $('#sw_other').value = ($('#sw_other').value ? $('#sw_other').value+', ' : '') + swv; }
+      });
+    }
+  })();
 
   // ---- chips per trade ----
   function chips(container, list, name){
@@ -454,25 +486,109 @@
 
   // ---- job software "other" ----
   function swOther(){
-    var other = $('#sw').value==='other';
+    var other = $('#sw input[value=other]').checked;
     $('#sw_other_wrap').hidden = !other;
     $('#sw_other_wrap').toggleAttribute('data-req', other);
   }
   $('#sw').addEventListener('change', swOther);
   swOther();
 
-  // ---- second contact ----
+  // ---- suburb autocomplete (all Australian localities, lazy-loaded) ----
+  var SUBURBS = null, subLoading = null, AREA = [];
+  function loadSuburbs(){
+    if(SUBURBS || subLoading) return subLoading || Promise.resolve(SUBURBS);
+    var tryUrls = ['suburbs.json'];
+    subLoading = tryUrls.reduce(function(pr,u){ return pr.catch(function(){ return fetch(u,{cache:'force-cache'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }); }); }, Promise.reject())
+      .then(function(d){ SUBURBS = d; return d; })
+      .catch(function(){ SUBURBS = []; return SUBURBS; });
+    return subLoading;
+  }
+  function matchSuburbs(term, prefState){
+    if(!SUBURBS || !term) return [];
+    var t = term.toLowerCase(), hits = [];
+    for(var i=0;i<SUBURBS.length && hits.length<40;i++){ if(SUBURBS[i][0].toLowerCase().indexOf(t)===0) hits.push(SUBURBS[i]); }
+    hits.sort(function(a,b){
+      var ea = a[0].toLowerCase()===t ? 0 : 1, eb = b[0].toLowerCase()===t ? 0 : 1;
+      if(ea!==eb) return ea-eb;
+      if(prefState && (a[1]===prefState)!==(b[1]===prefState)) return a[1]===prefState ? -1 : 1;
+      if((a[3]||0)!==(b[3]||0)) return (b[3]||0)-(a[3]||0);
+      return a[0].localeCompare(b[0]);
+    });
+    return hits.slice(0,8);
+  }
+  function autocomplete(input, box, onPick){
+    var idx = -1, items = [];
+    function close(){ box.hidden = true; box.innerHTML=''; idx=-1; items=[]; }
+    function render(){
+      box.innerHTML = '';
+      if(!items.length){ if(input.value.trim().length>=2 && SUBURBS){ box.innerHTML='<div class="none">No suburb found. Check the spelling.</div>'; box.hidden=false; } else close(); return; }
+      items.forEach(function(s,i){
+        var d = document.createElement('div'); d.className = i===idx?'on':'';
+        d.innerHTML = '<span>'+s[0]+'</span><span class="st">'+s[1]+' '+s[2]+'</span>';
+        d.addEventListener('mousedown', function(e){ e.preventDefault(); onPick(s); close(); });
+        box.appendChild(d);
+      });
+      box.hidden = false;
+    }
+    input.addEventListener('focus', function(){ loadSuburbs(); });
+    input.addEventListener('input', function(){
+      var v = input.value.trim();
+      if(v.length<2){ close(); return; }
+      loadSuburbs().then(function(){ items = matchSuburbs(v, $('#base_state').value || (AREA.length ? AREA[AREA.length-1][1] : '')); idx = items.length?0:-1; render(); });
+    });
+    input.addEventListener('keydown', function(e){
+      if(box.hidden) return;
+      if(e.key==='ArrowDown'){ e.preventDefault(); idx=Math.min(idx+1,items.length-1); render(); }
+      else if(e.key==='ArrowUp'){ e.preventDefault(); idx=Math.max(idx-1,0); render(); }
+      else if(e.key==='Enter'){ e.preventDefault(); if(items[idx]){ onPick(items[idx]); close(); } }
+      else if(e.key==='Escape'){ close(); }
+    });
+    input.addEventListener('blur', function(){ setTimeout(close,150); });
+  }
+  // home suburb: single pick
+  autocomplete($('#base'), $('#base_sugg'), function(s){
+    $('#base').value = s[0]; $('#base_state').value = s[1]; $('#base_postcode').value = s[2];
+  });
+  $('#base').addEventListener('input', function(){ $('#base_state').value=''; $('#base_postcode').value=''; });
+  // service area: tags
+  function renderTags(){
+    var t = $('#area_tags'); t.innerHTML='';
+    AREA.forEach(function(s,i){
+      var d = document.createElement('span'); d.className='tag';
+      d.innerHTML = s[0]+' <small>'+s[1]+'</small><button type="button" aria-label="Remove '+s[0]+'">&times;</button>';
+      d.querySelector('button').addEventListener('click', function(){ AREA.splice(i,1); renderTags(); });
+      t.appendChild(d);
+    });
+    try{ localStorage.setItem('receptly_intake_area', JSON.stringify(AREA)); }catch(_){}
+  }
+  autocomplete($('#area'), $('#area_sugg'), function(s){
+    if(!AREA.some(function(a){ return a[0]===s[0] && a[1]===s[1]; })) AREA.push(s);
+    renderTags(); $('#area').value=''; $('#area').focus(); $('#area').closest('.f').classList.remove('bad');
+  });
+  try{ var savedArea = JSON.parse(localStorage.getItem('receptly_intake_area')||'[]'); if(Array.isArray(savedArea)){ AREA = savedArea; renderTags(); } }catch(_){}
+
+  // ---- extra contacts (up to 3), removable ----
+  var MAXC = 3;
+  function contactCount(){ return $$('#contacts .contact').length; }
+  function refreshAdd(){ $('#addcontact').hidden = contactCount() >= MAXC; }
   $('#addcontact').addEventListener('click', function(){
-    var n = $$('#contacts .contact').length + 1;
+    var n = contactCount() + 1;
     var d = document.createElement('div'); d.className='contact';
-    d.innerHTML = '<div class="row">'+
-      '<div class="f" data-req style="margin-top:0"><label class="l" for="c'+n+'_name">Name</label><input type="text" id="c'+n+'_name" name="contact_name[]" placeholder="Second person"><div class="err">Need a name.</div></div>'+
+    d.innerHTML = '<div class="top"><span class="who">Person '+n+'</span><button type="button" class="rm">Remove</button></div>'+
+      '<div class="row">'+
+      '<div class="f" data-req style="margin-top:0"><label class="l" for="c'+n+'_name">Name</label><input type="text" id="c'+n+'_name" name="contact_name[]" placeholder="Name"><div class="err">Need a name.</div></div>'+
       '<div class="f" data-req data-mobile style="margin-top:0"><label class="l" for="c'+n+'_mobile">Mobile</label><input type="tel" id="c'+n+'_mobile" name="contact_mobile[]" inputmode="tel" placeholder="04xx xxx xxx"><div class="err">Australian mobile, 04 and ten digits.</div></div>'+
-      '</div>';
+      '</div>'+
+      '<div class="f" data-email-opt style="margin-top:14px"><label class="l" for="c'+n+'_email">Email <small>optional</small></label><input type="email" id="c'+n+'_email" name="contact_email[]" inputmode="email" placeholder="Leave blank for texts only"><div class="err">That email doesn\'t look right.</div></div>';
     $('#contacts').appendChild(d);
-    if(n>=3) this.hidden = true;
+    d.querySelector('.rm').addEventListener('click', function(){ d.remove(); refreshAdd(); });
+    $$('input', d).forEach(function(el){
+      el.addEventListener('input', function(){ var f = el.closest('.f'); if(f) f.classList.remove('bad'); });
+    });
+    refreshAdd();
     $('#c'+n+'_name').focus();
   });
+  refreshAdd();
 
   // ---- progress bar by scroll ----
   var secs = $$('section'), bars = $$('.progress span');
@@ -488,10 +604,12 @@
   function clean(v){ return (v||'').replace(/[\s\-()]/g,''); }
   function validate(){
     var ok = true, first = null;
-    $$('[data-req]', form).forEach(function(f){
+    $$('[data-req],[data-email-opt]', form).forEach(function(f){
       if(f.hidden) return;
       var bad = false;
-      if(f.hasAttribute('data-days')){ bad = !$$('input[name=days]:checked', f).length; }
+      if(f.hasAttribute('data-email-opt') && !f.hasAttribute('data-req')){ var ov0 = $('input', f).value.trim(); bad = !!ov0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ov0); }
+      else if(f.hasAttribute('data-days')){ bad = !$$('input[name=days]:checked', f).length; }
+      else if(f.hasAttribute('data-suburbs')){ bad = !AREA.length && !$('#area_note').value.trim(); }
       else if(f.hasAttribute('data-chips')){ bad = !$$('input[type=checkbox]:checked', f).length; }
       else if(f.hasAttribute('data-radio')){ bad = !$('input:checked', f); }
       else if(f.hasAttribute('data-check')){ bad = !$('#authority').checked; }
@@ -518,11 +636,14 @@
     var fd = new FormData(form), out = {};
     fd.forEach(function(v,k){
       if(k.slice(-2)==='[]'){ var kk=k.slice(0,-2); (out[kk]=out[kk]||[]).push(v); }
-      else if(k==='days'||k==='services'||k==='urgent'){ (out[k]=out[k]||[]).push(v); }
+      else if(k==='days'||k==='services'||k==='urgent'||k==='job_software'){ (out[k]=out[k]||[]).push(v); }
       else out[k]=v;
     });
-    out.contacts = (out.contact_name||[]).map(function(n,i){ return {name:n, mobile: clean((out.contact_mobile||[])[i]||'')}; });
-    delete out.contact_name; delete out.contact_mobile;
+    out.contacts = (out.contact_name||[]).map(function(n,i){ return {name:n, mobile: clean((out.contact_mobile||[])[i]||''), email: ((out.contact_email||[])[i]||'').trim()}; });
+    out.report_email = out.contacts.length ? out.contacts[0].email : '';
+    out.service_suburbs = AREA.map(function(s){ return {suburb:s[0], state:s[1], postcode:s[2]}; });
+    out.job_software = out.job_software || [];
+    delete out.contact_name; delete out.contact_mobile; delete out.contact_email;
     out.submitted_at = new Date().toISOString();
     out.user_agent = navigator.userAgent;
     out.page = location.href;
@@ -542,7 +663,7 @@
         form.hidden = true;
         $('#done_next').textContent = 'Kick-off call: ' + (q.get('kickoff') || 'as texted to you');
         var d = $('#done'); d.style.display='block'; d.scrollIntoView({behavior:'smooth', block:'start'});
-        try{ localStorage.removeItem('receptly_intake_draft'); }catch(_){}
+        try{ localStorage.removeItem('receptly_intake_draft'); localStorage.removeItem('receptly_intake_area'); }catch(_){}
       })
       .catch(function(){
         btn.disabled = false; btn.textContent = 'Save and build it';
@@ -559,7 +680,7 @@
       swOther();
     }
     form.addEventListener('input', function(){
-      var o = {}; ['trading_name','base_suburb','service_area','services_other','services_exclude','callout_fee','report_email','notes','authority_name','authority_role','job_software_other'].forEach(function(k){ var el=form.elements[k]; if(el) o[k]=el.value; });
+      var o = {}; ['trading_name','base_suburb','service_area_note','services_other','services_exclude','callout_fee','urgent_other','notes','authority_name','authority_role','job_software_other'].forEach(function(k){ var el=form.elements[k]; if(el) o[k]=el.value; });
       localStorage.setItem('receptly_intake_draft', JSON.stringify(o));
     });
   }catch(_){}
