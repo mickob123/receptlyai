@@ -1,0 +1,126 @@
+{
+"calendar.google.com|Settings and sharing": [
+408,
+210
+],
+"calendar.google.com|Add people and groups": [
+401,
+212
+],
+"calendar.google.com|Make changes, then Send": [
+502,
+330
+],
+"your email|Open our invite": [
+426,
+162
+],
+"your Receptly settings|Settings, Calendars, Connections": [
+550,
+193
+],
+"your Receptly settings|Add New, then Outlook": [
+340,
+236
+],
+"Microsoft sign-in|Sign in to Microsoft": [
+438,
+328
+],
+"Microsoft sign-in|Click Accept. Done.": [
+478,
+330
+],
+"your ServiceM8 login|Open Settings": [
+456,
+212
+],
+"your ServiceM8 login|Click API Keys": [
+340,
+227
+],
+"your ServiceM8 login|Add API Key, call it Receptly": [
+352,
+202
+],
+"your ServiceM8 login|Choose Full Access": [
+340,
+190
+],
+"your ServiceM8 login|Copy the whole key": [
+472,
+156
+],
+"your Fergus login|Open Settings": [
+340,
+212
+],
+"your Fergus login|Integrations, then Fergus API": [
+438,
+192
+],
+"your Fergus login|Generate a token": [
+340,
+156
+],
+"your Fergus login|Copy the whole token": [
+472,
+156
+],
+"your Simpro login|System, Setup, System Setup": [
+388,
+228
+],
+"your Simpro login|API tab, then Applications": [
+448,
+200
+],
+"your Simpro login|Add one, call it Receptly": [
+352,
+202
+],
+"your Simpro login|Copy the ID and secret": [
+492,
+226
+],
+"your email|Primary contact asks AroFlo": [
+536,
+326
+],
+"your email|Wait for AroFlo's yes": [
+556,
+152
+],
+"your AroFlo login|Site Administration, Settings": [
+340,
+150
+],
+"your AroFlo login|AroFlo API, then APIv2": [
+398,
+170
+],
+"your AroFlo login|Create the token, copy it": [
+492,
+216
+],
+"your Tradify login|Settings, then Enquiries": [
+378,
+228
+],
+"your Tradify login|Set up the address": [
+476,
+156
+],
+"|Send us the address": [
+344,
+150
+],
+"your Tradify login|Open your profile": [
+340,
+150
+],
+"your Tradify login|Connect Google Calendar": [
+371,
+170
+]
+}
