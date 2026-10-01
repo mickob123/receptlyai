@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400;600&display=swap');
+:root {
+  --font-family: 'Barlow', system-ui, sans-serif;
+  --font-weight-normal: 400;
+  --font-weight-bold: 600;
+  --font-size-body: 16px;
+  --font-size-label: 17px;
+  --font-size-input: 17px;
+  --font-size-header: 30px;
+  --font-size-paragraph: 17px;
+  --font-size-subheader: 17px;
+  --font-size-link: 15px;
+  --font-size-error: 15px;
+  --color-background: #0A0A0A;
+  --color-card-bg: #141414;
+  --color-card-border: #333633;
+  --color-card-shadow: transparent;
+  --color-link: #F2C300;
+  --color-header: #F2F2F0;
+  --color-header-subtext: #9C9B94;
+  --color-label: #F2F2F0;
+  --color-input-border: #4A4C49;
+  --color-input-text: #F2F2F0;
+  --color-focus-border: #F2C300;
+  --color-submit-btn-bg: #F2C300;
+  --color-submit-btn-text: #0A0A0A;
+  --color-error: #FF5A4E;
+  --color-required: #F2C300;
+  --color-html-text: #F2F2F0;
+  --color-html-link: #F2C300;
+  --border-radius-card: 0;
+  --border-radius-input: 0;
+  --card-border-radius: 0;
+  --container-width: 520px;
+  --submit-btn-height: 56px;
+  --padding-form-input: 14px;
+}
+h1, .form-header h1 { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif !important; text-transform: uppercase; letter-spacing: .01em; }
+.card { border-top: 6px solid #F2C300 !important; }
+input, select, textarea { background: #0A0A0A !important; color: #F2F2F0 !important; }
+input::placeholder { color: #9C9B94 !important; opacity: 1 !important; }
+button[type="submit"], .submit-btn { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif !important; text-transform: uppercase; font-size: 20px !important; letter-spacing: .04em; border-radius: 0 !important; }
+select option { background: #141414; color: #F2F2F0; }
