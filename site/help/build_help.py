@@ -26,8 +26,25 @@ def figs(items): return html(FIG_CSS + '<div class="rc-figures rc-figs-help">' +
     '<div class="rc-fig"><span class="rc-fig-n">%s</span><span class="rc-fig-t">%s</span></div>' % i for i in items) + '</div>')
 def ul(items): return html('<ul class="rc-list">' + "".join('<li>%s</li>' % i for i in items) + '</ul>')
 def nope(items): return html('<ul class="rc-nope">' + "".join('<li>%s</li>' % i for i in items) + '</ul>')
-def steps(items): return html('<ol class="rc-steps">' + "".join(
-    '<li><div><strong>%s</strong>%s</div></li>' % i for i in items) + '</ol>')
+SHOT_CSS = ('<style>.rc-shot{margin:14px 0 6px;max-width:520px}.rc-shot.phone{max-width:250px}'
+            '.rc-shot svg{width:100%;height:auto;display:block}'
+            '.rc-shot.duo{max-width:none;display:flex;flex-wrap:wrap;gap:14px}.rc-shot.duo svg{width:240px;max-width:100%}'
+            '@media(max-width:600px){.rc-shot.wide{margin-left:calc(-1 * var(--rc-shot-pull,0px))}}</style>')
+def _kind(svg):
+    vb = svg.split('viewBox="0 0 ')[1].split('"')[0].split()
+    w = float(vb[0])
+    return "duo" if w > 560 else ("phone" if w < 400 else "wide")
+def steps(items, shots=None):
+    shots = shots or [None]*len(items)
+    lis = []
+    for (a, b), sv in zip(items, shots):
+        if isinstance(sv, list):
+            fig = '<figure class="rc-shot duo">%s</figure>' % "".join(sv)
+        else:
+            fig = ('<figure class="rc-shot %s">%s</figure>' % (_kind(sv), sv)) if sv else ''
+        lis.append('<li><div><strong>%s</strong>%s%s</div></li>' % (a, b, fig))
+    return html((SHOT_CSS if any(shots) else '') + '<ol class="rc-steps">' + "".join(lis) + '</ol>')
+SHOT_NOTE = "Pictures are simplified. Your screen may look a little different."
 
 HANDOVER = ("Send it through the secure link we text you. Don't email it, text it back or read it out "
             "over the phone. The link puts it straight into our locked system and nobody sees it in a message.")
@@ -45,7 +62,9 @@ def guide(g):
     out += section(eyebrow("Before you start") + h2(g.get("before_h", "What you need")) + ul(g["before"]), "surface")
     for i, blk in enumerate(g["steps"]):
         out += section(eyebrow(blk["eyebrow"]) + h2(blk["h2"]) + (p(blk["intro"]) if blk.get("intro") else "")
-                       + steps(blk["items"]) + (muted(blk["after"]) if blk.get("after") else ""),
+                       + steps(blk["items"], blk.get("shots"))
+                       + (muted(SHOT_NOTE) if blk.get("shots") else "")
+                       + (muted(blk["after"]) if blk.get("after") else ""),
                        "" if i % 2 == 0 else "surface")
     out += section(eyebrow("What it costs you") + h2(g["cost_h"]) + "".join(p(x) for x in g["cost"]), "surface")
     if g.get("nope"):
@@ -76,12 +95,12 @@ dict(slug="google-calendar", name="Google Calendar", title="Connect Google Calen
     ("Go to Settings","Scroll to the bottom of the menu and tap Settings."),
     ("Pick the calendar","Under your email address, tap the calendar your jobs should land in. For most people that's the one with your own name on it."),
     ("Add us","Tap Shared with, then Add people or groups. Type the Receptly address."),
-    ("Set the permission","Choose <em>Make changes and see event details</em>. The default is view only, and we can't book a job into a calendar we can only look at."),
+    ("Set the permission","Choose <em>Make changes and see all event details</em>. The default is view only, and we can't book a job into a calendar we can only look at."),
     ("Save","Tap Save. That's it.")]),
   dict(eyebrow="On a computer", h2="Or share it from calendar.google.com", items=[
     ("Find the calendar","On the left, under My calendars, hover over your calendar and click the three dots, then Settings and sharing."),
     ("Add us","Under Share with specific people or groups, click Add people and groups and type the Receptly address."),
-    ("Set the permission","Choose <em>Make changes and see event details</em>, then Send.")])],
+    ("Set the permission","Choose <em>Make changes and see all event details</em>, then Send.")])],
  cost_h="Nothing", cost=["Sharing a Google Calendar is free. There's no extra account for you to pay for."],
  nope=NO_PASSWORD,
  off=["Go back to the same screen: Settings, your calendar, Shared with. Tap the cross next to our address and save. Bookings stop that moment.",
@@ -227,6 +246,22 @@ dict(slug="tradify", name="Tradify", title="Receptly and Tradify: what connects 
  off=["Enquiries: change or switch off the enquiries address in Tradify's Settings. Calendar: remove our address from your Google Calendar sharing."],
  faq=[("Will you connect properly if Tradify opens an API?","Yes, at no extra cost. We've asked Tradify directly and we'll tell you the answer, whatever it is.")]),
 ]
+
+import sys as _s; _s.path.insert(0, __import__("os").path.join(__import__("os").path.dirname(__file__), "mock"))
+import scenes as _sc
+from google import SHOTS as _gphone
+_G = {g["slug"]: g for g in GUIDES}
+_G["google-calendar"]["steps"][0]["shots"] = _gphone
+_G["google-calendar"]["steps"][1]["shots"] = _sc.gcal_web()
+_G["outlook"]["steps"][0]["shots"] = _sc.outlook()
+_G["servicem8"]["steps"][0]["shots"] = _sc.servicem8()
+_G["fergus"]["steps"][0]["shots"] = _sc.fergus()
+_G["simpro"]["steps"][0]["shots"] = _sc.simpro()
+_a1, _a2 = _sc.aroflo(); _G["aroflo"]["steps"][0]["shots"] = _a1; _G["aroflo"]["steps"][1]["shots"] = _a2
+_t1, _t2 = _sc.tradify(); _G["tradify"]["steps"][0]["shots"] = _t1; _G["tradify"]["steps"][1]["shots"] = _t2
+for _g in GUIDES:
+    for _b in _g["steps"]:
+        if _b.get("shots"): assert len(_b["shots"]) == len(_b["items"]), (_g["slug"], len(_b["shots"]), len(_b["items"]))
 
 HUB = dict(slug="help", title="Connect your calendar and job software",
  seo_title="Connect your calendar and job software | Receptly help", seo_desc="Step-by-step guides to connect Google Calendar, Outlook, ServiceM8, Fergus, Simpro, AroFlo and Tradify to Receptly. No passwords, no extra users.")
