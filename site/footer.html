@@ -1,0 +1,168 @@
+<!-- wp:html -->
+<div class="rc-tape" aria-hidden="true"></div>
+<!-- /wp:html -->
+
+<!-- wp:group {"align":"full","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull">
+<!-- wp:html -->
+<footer class="rc-footer">
+<div class="rc-footer-grid">
+<div>
+<h3>Trades</h3>
+<ul>
+<li><a href="/trades/plumbers/">Plumbers</a></li>
+<li><a href="/trades/electricians/">Electricians</a></li>
+<li><a href="/trades/air-conditioning/">Air conditioning</a></li>
+<li><a href="/trades/roofing/">Roofing</a></li>
+<li><a href="/trades/landscaping/">Landscaping</a></li>
+<li><a href="/trades/pest-control/">Pest control</a></li>
+<li><a href="/trades/locksmiths/">Locksmiths</a></li>
+<li><a href="/trades/builders/">Builders</a></li>
+</ul>
+</div>
+<div>
+<h3>Locations</h3>
+<ul>
+<li><a href="/locations/sydney/">Sydney</a></li>
+<li><a href="/locations/parramatta/">Parramatta</a></li>
+<li><a href="/locations/penrith/">Penrith</a></li>
+<li><a href="/locations/liverpool/">Liverpool</a></li>
+<li><a href="/locations/melbourne/">Melbourne</a></li>
+<li><a href="/locations/brisbane/">Brisbane</a></li>
+<li><a href="/locations/perth/">Perth</a></li>
+<li><a href="/locations/adelaide/">Adelaide</a></li>
+<li><a href="/locations/">All locations</a></li>
+</ul>
+</div>
+<div>
+<h3>Works with</h3>
+<ul>
+<li><a href="/integrations/servicem8/">ServiceM8</a></li>
+<li><a href="/integrations/simpro/">simPRO</a></li>
+<li><a href="/integrations/tradify/">Tradify</a></li>
+<li><a href="/integrations/aroflo/">AroFlo</a></li>
+<li><a href="/integrations/fergus/">Fergus</a></li>
+</ul>
+</div>
+<div>
+<h3>Compare</h3>
+<ul>
+<li><a href="/compare/ai-vs-voicemail/">vs voicemail</a></li>
+<li><a href="/compare/ai-vs-answering-service/">vs an answering service</a></li>
+<li><a href="/compare/ai-vs-hiring-a-receptionist/">vs hiring a receptionist</a></li>
+<li><a href="/compare/ai-receptionist-australia/">AI receptionists in Australia</a></li>
+</ul>
+</div>
+<div>
+<h3>Receptly</h3>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/how-it-works/">How it works</a></li>
+<li><a href="/pricing/">Pricing</a></li>
+<li><a href="/about/">About Receptly</a></li>
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/demo/">Hear the demo</a></li>
+<li><a href="/tools/missed-call-calculator/">Missed call calculator</a></li>
+<li><a href="/book/">Book a setup call</a></li>
+<li><a href="/divert/">Divert your number</a></li>
+<li><a href="/help/">Setup guides</a></li>
+</ul>
+</div>
+</div>
+<div class="rc-footer-bottom">
+<span><a href="/">Home</a> &middot; <a href="/about/">About</a> &middot; © Receptly. Built and run by <a href="https://agentivegroup.ai" rel="noopener">Agentive Group</a>, Sydney. <a href="mailto:contact@receptlyai.com.au" class="rc-mail" data-mail="contact@receptlyai.com.au">contact@receptlyai.com.au</a></span>
+<span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/call-recording/">Call recording</a> · <a href="#" id="rc-cc-link">Cookies</a></span>
+</div>
+</footer>
+<script>document.querySelectorAll('.rc-mail').forEach(function(a){a.addEventListener('click',function(e){if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches||!navigator.clipboard)return;e.preventDefault();var t=a.dataset.mail;navigator.clipboard.writeText(t).then(function(){a.textContent='Copied. Paste it into your email.';setTimeout(function(){a.textContent=t},3000)},function(){location.href=a.href})})});</script>
+<!-- /wp:html -->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:html -->
+<div class="rc-cc" id="rc-cc" role="region" aria-label="Cookie notice" hidden>
+  <div class="rc-cc-in">
+    <div class="rc-cc-txt">
+      <strong>Cookies.</strong> The site needs a couple of cookies to work at all. Beyond that we&rsquo;d like to use analytics and advertising cookies, so we can see which pages actually bring tradies in. Entirely your call &mdash; everything works either way. <a href="/privacy/">Privacy policy</a>.
+    </div>
+    <div class="rc-cc-btns">
+      <button type="button" class="rc-cc-b rc-cc-b--yes" data-rc-cc="all">Accept all</button>
+      <button type="button" class="rc-cc-b rc-cc-b--no" data-rc-cc="essential">Essential only</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY = 'rc_consent', DAYS = 365;
+
+  function read(){
+    var m = document.cookie.match(/(?:^|;\s*)rc_consent=([^;]*)/);
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+  function write(v){
+    var d = new Date(); d.setTime(d.getTime() + DAYS*864e5);
+    document.cookie = KEY + '=' + encodeURIComponent(v) + ';expires=' + d.toUTCString()
+      + ';path=/;SameSite=Lax' + (location.protocol === 'https:' ? ';Secure' : '');
+  }
+
+  // The gate. Tracking scripts register here instead of running on load.
+  var queue = [];
+  var api = {
+    get state(){ return read(); },
+    granted: function(){ return read() === 'all'; },
+    // rcConsent.whenGranted(fn) -> fn runs now if already accepted, else on accept, else never.
+    whenGranted: function(fn){
+      if (typeof fn !== 'function') return;
+      if (read() === 'all') { try { fn(); } catch(e){} } else { queue.push(fn); }
+    },
+    show: function(){ var b = document.getElementById('rc-cc'); if (b) b.hidden = false; },
+    reset: function(){ write(''); document.cookie = KEY + '=;Max-Age=0;path=/'; api.show(); }
+  };
+  window.rcConsent = api;
+
+  function decide(v){
+    write(v);
+    var b = document.getElementById('rc-cc'); if (b) b.hidden = true;
+    if (v === 'all') { var q = queue.splice(0); for (var i=0;i<q.length;i++){ try { q[i](); } catch(e){} } }
+  }
+
+  function init(){
+    var b = document.getElementById('rc-cc');
+    if (!b) return;
+    b.addEventListener('click', function(e){
+      var t = e.target.closest('[data-rc-cc]');
+      if (t) decide(t.getAttribute('data-rc-cc'));
+    });
+    var link = document.getElementById('rc-cc-link');
+    if (link) link.addEventListener('click', function(e){ e.preventDefault(); api.reset(); });
+    if (!read()) b.hidden = false;
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script id="rc-ga">
+(function(){
+  var ID = 'G-J2B5833WWR', loaded = false;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ window.dataLayer.push(arguments); }
+  window.rcTrack = function(name, params){ if (loaded) { gtag('event', name, params || {}); } };
+  function load(){
+    if (loaded) return; loaded = true;
+    window.gtag = gtag;
+    var s = document.createElement('script'); s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
+    document.head.appendChild(s);
+    gtag('js', new Date());
+    gtag('config', ID);
+  }
+  if (window.rcConsent) { window.rcConsent.whenGranted(load); }
+  // Tel links are the other lead: a tradie tapping the 1300 number.
+  document.addEventListener('click', function(e){
+    var a = e.target.closest ? e.target.closest('a[href^="tel:"]') : null;
+    if (a) { window.rcTrack('click_to_call', { number: a.getAttribute('href').slice(4), page: location.pathname }); }
+  }, true);
+})();
+</script>
+<!-- /wp:html -->
