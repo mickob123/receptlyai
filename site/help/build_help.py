@@ -21,7 +21,8 @@ def lead(t): return '<!-- wp:paragraph {"className":"rc-lead","fontSize":"large"
 def p(t): return '<!-- wp:paragraph -->\n<p>%s</p>\n<!-- /wp:paragraph -->\n' % t
 def muted(t): return '<!-- wp:paragraph {"className":"rc-muted"} -->\n<p class="rc-muted">%s</p>\n<!-- /wp:paragraph -->\n' % t
 def html(t): return '<!-- wp:html -->\n%s\n<!-- /wp:html -->\n' % t
-def figs(items): return html('<div class="rc-figures">' + "".join(
+FIG_CSS = '<style>.rc-figs-help .rc-fig-n{font-size:clamp(2rem,4.2vw,2.75rem);line-height:1.05}</style>'
+def figs(items): return html(FIG_CSS + '<div class="rc-figures rc-figs-help">' + "".join(
     '<div class="rc-fig"><span class="rc-fig-n">%s</span><span class="rc-fig-t">%s</span></div>' % i for i in items) + '</div>')
 def ul(items): return html('<ul class="rc-list">' + "".join('<li>%s</li>' % i for i in items) + '</ul>')
 def nope(items): return html('<ul class="rc-nope">' + "".join('<li>%s</li>' % i for i in items) + '</ul>')
@@ -65,7 +66,7 @@ dict(slug="google-calendar", name="Google Calendar", title="Connect Google Calen
  seo_title="Share your Google Calendar with Receptly | Help", seo_desc="How to let Receptly book jobs into your Google Calendar from your phone in about a minute. No password, nothing to install, and you can switch it off yourself.",
  h1="Let Receptly book jobs into your Google Calendar",
  lead="About a minute on your phone. You share your calendar with us the same way you'd share it with an office manager. We do the rest.",
- facts=[("1 minute","On your phone or a computer. Nothing to install."),("You","Whoever owns the Google account your jobs go into."),("Free","Sharing a calendar costs nothing.")],
+ facts=[("1 min","On your phone or a computer. Nothing to install."),("You","Whoever owns the Google account your jobs go into."),("Free","Sharing a calendar costs nothing.")],
  before=["The Google Calendar app on your phone, or a computer with calendar.google.com open.",
          "Signed in to the Google account that holds your work calendar.",
          "The Receptly address we give you on the setup call. It doesn't need to be in your contacts. Type it in and it works.",
@@ -93,7 +94,7 @@ dict(slug="outlook", name="Outlook", title="Connect Outlook or Microsoft 365 to 
  seo_title="Connect Outlook or Microsoft 365 to Receptly | Help", seo_desc="How to connect an Outlook, Hotmail or Microsoft 365 calendar to Receptly so it can book jobs in. One sign-in on a computer, about two minutes.",
  h1="Let Receptly book jobs into your Outlook calendar",
  lead="Microsoft doesn't let you share an editable calendar with anyone outside your business, so Outlook works differently from Google. You sign in once and click Accept. About two minutes on a computer.",
- facts=[("2 minutes","On a computer. Easier than on a phone."),("You","Whoever owns the Outlook or Microsoft 365 account."),("Free","No extra Microsoft licence.")],
+ facts=[("2 min","On a computer. Easier than on a phone."),("You","Whoever owns the Outlook or Microsoft 365 account."),("Free","No extra Microsoft licence.")],
  before=["A computer. You'll sign in to your Microsoft account once.",
          "The email invite we send you after the setup call. It gives you a login to your Receptly settings, for this one job.",
          "If someone else runs your business Microsoft 365, they may need to approve the connection. If you see <em>Need admin approval</em>, forward it to them."],
@@ -115,7 +116,7 @@ dict(slug="servicem8", name="ServiceM8", title="Connect ServiceM8 to Receptly",
  seo_title="How to create a ServiceM8 API key for Receptly | Help", seo_desc="Step by step: create a ServiceM8 API key so Receptly can put jobs from your calls straight into ServiceM8. Five minutes, no extra user, revoke it yourself any time.",
  h1="Connect ServiceM8 in five minutes",
  lead="You make a key in ServiceM8 and send it to us. The key lets Receptly create clients and jobs from your calls. No extra user, no password.",
- facts=[("5 minutes","On a computer. The ServiceM8 web app, not the phone app."),("You","The account owner, or whoever looks after your ServiceM8 settings."),("No extra user","ServiceM8 doesn't charge per user. The key isn't a user anyway.")],
+ facts=[("5 min","On a computer. The ServiceM8 web app, not the phone app."),("You","The account owner, or whoever looks after your ServiceM8 settings."),("No extra user","ServiceM8 doesn't charge per user. The key isn't a user anyway.")],
  before=["A paid ServiceM8 plan. The free plan doesn't include API keys.",
          "Your ServiceM8 login, on a computer.",
          "The secure link we text you after the setup call."],
@@ -139,7 +140,7 @@ dict(slug="fergus", name="Fergus", title="Connect Fergus to Receptly",
  seo_title="How to create a Fergus access token for Receptly | Help", seo_desc="Step by step: generate a Fergus personal access token so Receptly can lodge calls as enquiries or jobs. No extra user, and you can revoke it yourself.",
  h1="Connect Fergus in five minutes",
  lead="You generate a token in Fergus and send it to us. It works through a login you already pay for, so there's no extra user.",
- facts=[("5 minutes","On a computer."),("You","An Admin or Full User in Fergus."),("No extra user","The token hangs off a user you already have.")],
+ facts=[("5 min","On a computer."),("You","An Admin or Full User in Fergus."),("No extra user","The token hangs off a user you already have.")],
  before=["An Admin or Full User login in Fergus. Timesheet users can't do this.",
          "The secure link we text you after the setup call.",
          "Fergus allows one token per user. If you've already made one for something else, like Zapier, have another Full User make ours, or tell us on the setup call."],
@@ -163,7 +164,7 @@ dict(slug="simpro", name="Simpro", title="Connect Simpro to Receptly",
  seo_title="How to set up Simpro API access for Receptly | Help", seo_desc="How to create a Simpro API application so Receptly can create jobs from your calls, and what to check about licences before you start.",
  h1="Connect Simpro",
  lead="Simpro makes the account owner create the connection, which is the right way round: the credentials are yours to switch off. About ten minutes on a computer, and we'll be on the phone for it.",
- facts=[("10 minutes","On a computer, with us on the phone."),("You","Someone with the API Applications permission, usually the owner or admin."),("Licences","We check this with you before anything is set up.")],
+ facts=[("10 min","On a computer, with us on the phone."),("You","Someone with the API Applications permission, usually the owner or admin."),("Licences","We check this with you before anything is set up.")],
  before=["A Simpro login with the <em>API Applications</em> permission. If you can't see the API tab in the steps below, that's the missing piece.",
          "Your Simpro web address, the one you log in at.",
          "The secure link we text you after the setup call."],
